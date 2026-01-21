@@ -1,0 +1,411 @@
+/* Chat.module.css */
+
+/* Định nghĩa biến cục bộ cho module - Đã chuyển sang LIGHT THEME */
+.container {
+    /* --- Bảng màu gốc theo yêu cầu --- */
+    --color-bg-main: #E5EFF1;       /* Nền tổng thể */
+    --color-text-main: #3D5D6A;     /* Chữ chính */
+    --color-card-bg: #FFFFFF;       /* Nền thẻ/Sidebar/Input */
+    --color-border: #95B6BF;        /* Viền */
+    --color-hover: #D0E8EC;         /* Hover */
+    --color-accent: #D9EEF3;        /* Màu nhấn nhẹ */
+
+    /* --- Mapping vào các biến logic cũ --- */
+    --bg-main: var(--color-bg-main);
+    --bg-sidebar: var(--color-card-bg);
+    --bg-message-bot: transparent;
+    --bg-message-user: var(--color-text-main); /* Tin nhắn user dùng màu đậm chủ đạo */
+    --bg-input: var(--color-card-bg);
+    
+    --text-primary: var(--color-text-main);
+    --text-secondary: #718d99; /* Màu nhạt hơn của text-primary cho các text phụ */
+    
+    --border-color: var(--color-border);
+    --sidebar-width: 280px;
+
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Scrollbar Custom - Chỉnh lại màu cho nền sáng */
+.container ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.container ::-webkit-scrollbar-track {
+    background: transparent;
+}
+.container ::-webkit-scrollbar-thumb {
+    background: #bdcfd4; /* Màu thanh cuộn nhạt */
+    border-radius: 4px;
+}
+.container ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border); /* Đậm hơn khi hover */
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+    transition: transform 0.3s ease;
+    z-index: 100;
+    box-shadow: 2px 0 10px rgba(61, 93, 106, 0.05); /* Thêm bóng mờ nhẹ */
+}
+
+.sidebarHeader {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+}
+
+.uploadBtn {
+    margin: 16px;
+    padding: 12px;
+    background-color: var(--color-accent); /* Dùng màu accent nhẹ */
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+}
+.uploadBtn input{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.uploadBtn:hover {
+    background-color: var(--color-hover);
+    border-color: var(--text-primary);
+}
+
+.sectionTitle {
+    padding: 0 16px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+/* --- SCROLL NGANG SIDEBAR --- */
+.templateList {
+    flex: .5;
+    padding: 0 16px;
+    overflow-y: auto;
+}
+
+.templateListInner {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    gap: 10px; /* Giảm gap chút cho gọn */
+}
+
+.templateItem {
+    padding: 12px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: background 0.2s;
+    justify-content: space-around;
+    overflow-x: auto;
+    border: 1px solid transparent; /* Giữ chỗ cho border active */
+}
+.templateItem p:nth-child(2){
+    width: auto;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    height: 100%;
+    font-weight: 500;
+}
+.templateItem svg{
+    min-width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+}
+.templateItem p:nth-child(3){
+    width: 10%;
+    min-width: 80px;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 3px 0px;
+    transition: all .1s linear;
+    position: relative;
+    color: var(--text-secondary);
+}
+.templateItem p:nth-child(3)::before{
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: var(--text-primary); /* Đổi từ trắng sang màu text chính */
+    bottom: -2px;
+    transition: all .1s ease-in;
+}
+.templateItem p:nth-child(3):hover::before{
+    width: 80%;
+}
+
+.templateItem:hover {
+    background-color: var(--color-hover);
+}
+
+.templateItem__active{
+    background-color: var(--color-hover);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+.userProfile {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background-color: var(--bg-sidebar);
+}
+
+.userProfile:hover {
+    background-color: var(--color-hover);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    background-color: var(--text-primary); /* Đổi background avatar cho hợp theme */
+    color: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* --- MAIN CHAT AREA --- */
+.mainChat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: var(--bg-main);
+}
+
+.mobileHeader {
+    display: none;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-sidebar);
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-primary);
+}
+
+.chatContainer {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.message {
+    display: flex;
+    gap: 16px;
+    line-height: 1.6;
+}
+
+.messageBot {
+    justify-content: flex-start;
+}
+.messageBot ul, .messageBot li, .messageBot p{
+    text-align: start;
+}
+/* Code block trong nền sáng */
+.messageBot p code {
+    background: #dfe8eb !important; 
+    color: #c7254e;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+.messageUser p{
+    color: white
+}
+
+.messageUser {
+    justify-content: flex-end;
+}
+
+.messageContent {
+    padding: 12px 16px;
+    border-radius: 12px;
+    max-width: 85%;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* Thêm shadow nhẹ */
+}
+
+.messageBot .messageContent {
+    background-color: #FFFFFF; /* Bot nền trắng cho dễ đọc */
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.messageUser .messageContent {
+    background-color: var(--bg-message-user); /* Màu #3D5D6A */
+    color: white;
+    border-radius: 12px 12px 0 12px;
+}
+
+.iconAvatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+/* Icon Bot đổi sang màu Teal đậm cho hợp, hoặc giữ xanh lá nếu muốn */
+.botIcon { 
+    background-color: #3D5D6A; 
+    color: white;
+} 
+
+/* --- INPUT AREA --- */
+.inputArea {
+    padding: 20px;
+    background-color: var(--bg-main);
+}
+
+.inputWrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    background-color: var(--bg-input); /* Màu trắng */
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(61, 93, 106, 0.05);
+}
+
+.inputWrapper:focus-within {
+    border-color: var(--text-primary);
+    box-shadow: 0 2px 10px rgba(61, 93, 106, 0.15);
+}
+
+.textArea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-primary); /* ĐỔI TỪ WHITE SANG TEXT PRIMARY */
+    resize: none;
+    padding: 10px;
+    max-height: 200px;
+    outline: none;
+    font-size: 1rem;
+    line-height: 1.5;
+    height: 52px;
+}
+.textArea::placeholder {
+    color: var(--text-secondary);
+}
+
+.sendBtn {
+    background-color: var(--bg-message-user);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    transition: opacity 0.2s;
+}
+
+.sendBtn:hover { opacity: 0.9; }
+.sendBtn:disabled { background-color: #95B6BF; cursor: not-allowed; }
+
+.footerText {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+}
+
+/* --- OVERLAY & RESPONSIVE --- */
+.overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(61, 93, 106, 0.4); /* Overlay màu xanh tối mờ */
+    backdrop-filter: blur(2px);
+    z-index: 90;
+    display: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        height: 100%;
+        left: -100%;
+        background-color: var(--bg-sidebar);
+    }
+    
+    .sidebar.active {
+        left: 0;
+        box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+    }
+
+    .mobileHeader {
+        display: flex;
+    }
+
+    .overlay.active {
+        display: block;
+    }
+}

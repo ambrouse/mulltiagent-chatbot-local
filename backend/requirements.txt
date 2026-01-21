@@ -1,0 +1,29 @@
+
+# backend
+fastapi 
+uvicorn 
+pydantic 
+python-dotenv
+httpx
+python-multipart
+
+# database
+qdrant-client
+sqlalchemy 
+asyncpg
+psycopg2-binary
+
+# AI & Workflow
+langchain
+langgraph
+
+#xử lý word
+docxtpl      
+docx2txt     
+python-docx  
+vietnam_number
+
+
+
+# đọc file
+python-multipart
